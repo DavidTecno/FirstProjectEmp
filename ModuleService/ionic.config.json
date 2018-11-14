@@ -1,0 +1,7 @@
+{
+  "name": "ModuleService",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}

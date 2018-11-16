@@ -40,7 +40,7 @@ var Module = require("../models/module");
     //Get One
     exports.getModule = function(req, res) {
         // Use the Module model to find a specific module
-        Module.findById(req.params._id, function(err, module) {
+        Module.findById(req.params.id, function(err, module) {
           if (err)
             res.send(err);
       
@@ -51,27 +51,21 @@ var Module = require("../models/module");
     //Put
     exports.putModules = function(req, res) {
         // Use the Module model to find a specific module
-        Module.findById(req.params._id, function(err, module) {
+        Module.findByIdAndUpdate(req.params.id, req.body, {new: true}, 
+        (err, module) => {
           if (err)
             res.send(err);
       
-          // Update the existing module quantity
-          module.name = req.body.name;
-      
-          // Save the module and check for errors
-          module.save(function(err) {
-            if (err)
-              res.send(err);
+          
       
             res.json(module);
           });
-        });
-      };
+        };
 
       //Delete
       exports.deleteModules = function(req, res) {
         // Use the Module model to find a specific module and remove it
-        Module.findByIdAndRemove(req.params._id, function(err) {
+        Module.findByIdAndRemove(req.params.id, function(err) {
           if (err)
             res.send(err);
       

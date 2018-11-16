@@ -10,15 +10,23 @@ app.use(bodyParser.urlencoded({
 
 //Controllers
 var moduleController = require('./controllers/modules')
+var subjectController = require('./controllers/subjects')
 
 //Create a news routes with the prefix /...
 var router = express.Router();
 
 router.route('/modules')
   .post(moduleController.postModules)
+  .get(moduleController.allModules);
+
+  router.route('/modules/:id')
   .get(moduleController.allModules)
   .put(moduleController.putModules)
   .delete(moduleController.deleteModules);  
+
+  //post subjects is put in modules 
+  router.route('/subjects/:id')
+  .post(subjectController.postSubjects);
 
 mongoose.connect("mongodb://127.0.0.1:27017/ServiciosPedidos", {
     // usar para evitar problemas con el node

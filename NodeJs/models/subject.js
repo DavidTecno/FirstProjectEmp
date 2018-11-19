@@ -1,8 +1,8 @@
 var mongoose = require("mongoose");
 
 var SubjectSchema = new mongoose.Schema({
-    name: String,
-    username: String,
+    name:  {type: String, required: true},
+    username:  {type: String, required: true},
     info: String,
     img: [{
         type: String
@@ -10,7 +10,6 @@ var SubjectSchema = new mongoose.Schema({
     video: [{
         type: String
     }]
-    //schema[{collections: ...}]
 });
 
 module.exports = mongoose.model("Subject", SubjectSchema);

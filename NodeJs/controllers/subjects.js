@@ -39,19 +39,19 @@ exports.postSubjects = function (req, res) {
 
     Module.findById(req.params.id, (err, module) => {
 
-      if(module.subjects == null){
-        module.subjects = [ subject_id ];
+      if (module.subjects == null) {
+        module.subjects = [subject_id];
       } else {
         module.subjects.push(subject._id);
       }
-      
+
       module.save((err) => {
         if (err) {
           res.send(err);
         }
         res.json({ message: 'Subject added to the Service!', data: subject });
       });
-      
+
     });
 
   });

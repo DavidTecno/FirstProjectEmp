@@ -9,6 +9,7 @@ var Module = require("../models/module");
         // Set the module properties that came from the POST data
         module.name = req.body.name;
         module.info = req.body.info;
+        module.subjects = [];
 
         // Save the module and check for errors
         module.save(function (err) {

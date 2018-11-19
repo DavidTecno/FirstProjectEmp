@@ -26,7 +26,12 @@ router.route('/modules')
 
   //post subjects is put in modules 
   router.route('/subjects/:id')
-  .post(subjectController.postSubjects);
+  .post(subjectController.postSubjects)
+  .put(subjectController.putSubjects)
+  .delete(subjectController.deleteSubjects);
+
+  router.route('/subjects')
+  .get(subjectController.allSubjects);
 
 mongoose.connect("mongodb://127.0.0.1:27017/ServiciosPedidos", {
     // usar para evitar problemas con el node

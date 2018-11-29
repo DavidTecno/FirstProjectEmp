@@ -1,13 +1,8 @@
 var Subject = require("../models/subject");
-var Module = require("../models/module");
 
-exports.postSubjects = function (req, res) {
+exports.postImages = function (req, res) {
 
   var subject = new Subject();
-
-  // Set the subject properties that came from the POST data
-  subject.name = req.body.name;
-  subject.info = req.body.info;
 
   subject.images = [{filename: req.file.filename}];
 
@@ -20,15 +15,12 @@ exports.postSubjects = function (req, res) {
       res.send(err);
     }
 
-    Module.findById(req.body.moduleId, (err, module) => {
+    Subject.findById(req.body.subjectId, (err, subject) => {
 
-      if (module.subjects == null) {
-        module.subjects = [subject_id];
-      } else {
-        module.subjects.push(subject._id);
-      }
+        subject.images.push({filename: req.file.filename});
+      
 
-      module.save((err) => {
+      subject.save((err) => {
         if (err) {
           res.send(err);
         }

@@ -1,14 +1,24 @@
 var mongoose = require("mongoose");
 
 var SubjectSchema = new mongoose.Schema({
-    name:  {type: String, required: true},
-    username:  {type: String, required: true},
+    name: { type: String, required: true },
+    user: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Users' }],
     info: String,
-    img: [{
-        type: String
+    images: [{
+        filename: String,
+        created: {
+            type: Date,
+            default: Date.now
+        }
+
     }],
-    video: [{
-        type: String
+    videos: [{
+        name: String,
+        created: {
+            type: Date,
+            default: Date.now
+        }
+
     }]
 });
 

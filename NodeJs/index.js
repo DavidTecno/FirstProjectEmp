@@ -2,6 +2,9 @@ var express = require("express");
 var mongoose = require("mongoose");
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var multer = require('multer');
+var cors = require('cors');
+
 var app = express();
 
 // Use the body-parser package in our application
@@ -10,6 +13,22 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use(passport.initialize());
+
+//Uploads Images
+let Upload_Path = 'uploads';
+
+var storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, Upload_Path);
+    },
+    filename: function (req, file, cb){
+        cb(null, file.fieldname + '-' + Date.now());
+    }
+});
+
+let upload = multer({ storage: storage});
+
+app.use(cors());
 
 //Controllers
 var moduleController = require('./controllers/modules')
@@ -33,10 +52,12 @@ router.route('/modules/:id')
 //..subjects
 //post subjects is put in modules 
 router.route('/subjects')
-    .get(subjectController.allSubjects);
+    .get(subjectController.allSubjects)
+    //.post(subjectController.postSubjects)
+    .post(upload.single('image'), subjectController.postSubjects);
+
 
 router.route('/subjects/:id')
-    .post(subjectController.postSubjects)
     .put(subjectController.putSubjects)
     .delete(subjectController.deleteSubjects);
 
@@ -47,7 +68,7 @@ router.route('/users/:id')
     .delete(moduleController.deleteModules);
 
 router.route('/users')
-    .post(authController.isAuthenticated, userController.postUsers)
+    .post(userController.postUsers)
     .get(authController.isAuthenticated, userController.allUsers);
 
 mongoose.connect("mongodb://127.0.0.1:27017/ServiciosPedidos", {

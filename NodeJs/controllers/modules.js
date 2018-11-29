@@ -1,5 +1,4 @@
 var Module = require("../models/module");
-//var Subject = require("../models/subject");
 
 //Post
 exports.postModules = function (req, res) {

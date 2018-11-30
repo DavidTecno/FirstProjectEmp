@@ -1,4 +1,5 @@
 var Module = require("../models/module");
+var User = require("../models/user");
 
 //Post
 exports.postModules = function (req, res) {
@@ -8,18 +9,31 @@ exports.postModules = function (req, res) {
   // Set the module properties that came from the POST data
   module.name = req.body.name;
   module.info = req.body.info;
-  module.subjects = [];
 
   // Save the module and check for errors
-  module.save(function (err) {
-    if (err) {
+  
+  
+    User.findById(req.body.userId, (err, user) => {
 
-      res.send(err);
+      if (module.user == null) {
+        module.user = [user_id];
+      } else {
+        module.user.push(user._id);
 
-    }
+      }
+  
+      module.save((err) => {
+        if (err) {
+          res.send(err);
+        }else{
+          res.json({ message: 'User added to the Module!', data: module });
+        }
+        
+      });    
+    });
 
-    res.json({ message: 'Module added to the Service!', data: module });
-  });
+    
+ 
 };
 
 //Gets

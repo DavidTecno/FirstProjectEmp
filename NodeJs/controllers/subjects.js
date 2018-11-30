@@ -1,5 +1,6 @@
 var Subject = require("../models/subject");
 var Module = require("../models/module");
+var User = require('../models/user');
 
 exports.postSubjects = function (req, res) {
 
@@ -9,35 +10,51 @@ exports.postSubjects = function (req, res) {
   subject.name = req.body.name;
   subject.info = req.body.info;
 
-  subject.images = [{filename: req.file.filename}];
+  Module.findById(req.body.moduleId, (err, module) => {
 
-  subject.videos = [{filename: req.file.filename}];
+    if (subject.modules == null) {
+      subject.modules = [module_id];
+    } else {
+      console.log(module._id);
+      subject.modules.push(module._id);
 
-  // Save the subject and check for errors
-
-  subject.save(function (err) {
-    if (err) {
-      res.send(err);
     }
 
-    Module.findById(req.body.moduleId, (err, module) => {
-
-      if (module.subjects == null) {
-        module.subjects = [subject_id];
-      } else {
-        module.subjects.push(subject._id);
+    subject.save(function (err) {
+      if (err) {
+        res.send(err);
       }
-
-      module.save((err) => {
-        if (err) {
-          res.send(err);
-        }
-        res.json({ message: 'Subject added to the Service!', data: subject });
-      });
-
+    
     });
 
   });
+
+  User.findById(req.body.userId, (err, user) => {
+
+    if (subject.user == null) {
+      subject.user = [user_id];
+    } else {
+    subject.user.push(user._id);
+
+    }
+
+    subject.save(function (err) {
+      if (err) {
+        res.send(err);
+      }
+    
+    });
+
+  });
+
+  // // Save the subject and check for errors
+  // subject.save(function (err) {
+  //   if (err) {
+  //     res.send(err);
+  //   }
+  //   res.json({ message: 'Subject added to the Service!', data: subject });
+
+  // });
 };
 
 //Gets

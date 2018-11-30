@@ -15,7 +15,7 @@ app.use(bodyParser.urlencoded({
 app.use(passport.initialize());
 
 //Uploads Images
-let Upload_Path = 'uploads';
+var Upload_Path = "uploads";
 
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -35,6 +35,8 @@ var moduleController = require('./controllers/modules')
 var subjectController = require('./controllers/subjects')
 var userController = require('./controllers/users')
 var authController = require('./controllers/auth')
+var imageController = require('./controllers/images')
+
 
 //Create a news routes with the prefix /...
 var router = express.Router();
@@ -53,9 +55,7 @@ router.route('/modules/:id')
 //post subjects is put in modules 
 router.route('/subjects')
     .get(subjectController.allSubjects)
-    //.post(subjectController.postSubjects)
-    .post(upload.single('image'), subjectController.postSubjects);
-
+    .post(subjectController.postSubjects);
 
 router.route('/subjects/:id')
     .put(subjectController.putSubjects)
@@ -69,7 +69,16 @@ router.route('/users/:id')
 
 router.route('/users')
     .post(userController.postUsers)
-    .get(authController.isAuthenticated, userController.allUsers);
+    .get(userController.allUsers);
+
+//image
+router.route('/images')
+    .post(upload.single('image'), imageController.postImages)
+    .get(imageController.allImages);
+
+router.route('/images/:id')
+    .get(imageController.getImage)
+    .delete(imageController.deleteImage);
 
 mongoose.connect("mongodb://127.0.0.1:27017/ServiciosPedidos", {
     // usar para evitar problemas con el node

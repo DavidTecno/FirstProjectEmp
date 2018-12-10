@@ -9,7 +9,7 @@ exports.postUsers = function (req, res) {
   user.username = req.body.username;
   user.email = req.body.email;
   user.password = req.body.password;
-  user.roles = ['5c0048994d6ba830675c8d22'];
+  user.role = ['5c0cfc48b79fd039918ec3ea'];
 
   // Save the user and check for errors
   user.save(function (err) {

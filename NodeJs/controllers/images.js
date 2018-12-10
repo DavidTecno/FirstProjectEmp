@@ -9,20 +9,9 @@ exports.postImages = function (req, res) {
 
   var image = new Image();
   image.filename = req.file.filename;
+  image.subject = req.body.subjectId;
 
   // Save the image and check for errors
-
-
-
-  Subject.findById(req.body.subjectId, (err, subject) => {
-
-    if (image.subjects == null) {
-      image.subjects = [subject_id];
-    } else {
-      image.subjects.push(subject._id);
-    }
-    //subject.images.push({filename: req.file.filename});
-
 
     image.save(function (err) {
       if (err) {
@@ -30,7 +19,7 @@ exports.postImages = function (req, res) {
       }
       res.json({ message: 'Image added', data: image });
     });
-  });
+
 
 };
 

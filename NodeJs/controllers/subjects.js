@@ -9,18 +9,19 @@ exports.postSubjects = function (req, res) {
   // Set the subject properties that came from the POST data
   subject.name = req.body.name;
   subject.info = req.body.info;
+  subject.user = req.body.userId;
+  subject.module = req.body.moduleId;
 
   Module.findById(req.body.moduleId, (err, module) => {
 
-    if (subject.modules == null) {
-      subject.modules = [module_id];
+    if (module.subjects == null) {
+      
     } else {
-      console.log(module._id);
-      subject.modules.push(module._id);
+      module.subjects.push(subject._id);
 
     }
 
-    subject.save(function (err) {
+    module.save(function (err) {
       if (err) {
         res.send(err);
       }
@@ -31,30 +32,31 @@ exports.postSubjects = function (req, res) {
 
   User.findById(req.body.userId, (err, user) => {
 
-    if (subject.user == null) {
-      subject.user = [user_id];
+    if (user.subjects == null) {
+
     } else {
-    subject.user.push(user._id);
+      user.subjects.push(subject._id);
 
     }
 
-    subject.save(function (err) {
+    user.save(function (err) {
       if (err) {
         res.send(err);
       }
     
     });
 
+    subject.save(function (err) {
+      if (err) {
+        res.send(err);
+      }
+     res.json({ message: 'Subject added to the Service!', data: subject });
+      
+    });
+    
+
   });
 
-  // // Save the subject and check for errors
-  // subject.save(function (err) {
-  //   if (err) {
-  //     res.send(err);
-  //   }
-  //   res.json({ message: 'Subject added to the Service!', data: subject });
-
-  // });
 };
 
 //Gets

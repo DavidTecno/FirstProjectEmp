@@ -6,7 +6,7 @@ var ImageSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    subjects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Subject' }]
+    subject: { type: mongoose.Schema.Types.ObjectId, ref: 'Subject' }
 });
 
 module.exports = mongoose.model("Image", ImageSchema);

@@ -5,7 +5,8 @@ var UserSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true},
     email: { type: String, required: true, unique: true},
     password: { type: String, required: true },
-    roles: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Role' }]
+    role: { type: mongoose.Schema.Types.ObjectId, ref: 'Role' },
+    subjects: [{type: mongoose.Schema.Types.ObjectId, ref: 'Subject'}]
 });
 
 UserSchema.pre('save', function (callback) {
@@ -33,4 +34,4 @@ UserSchema.methods.verifyPassword = function (password, cb) {
     });
 };
 
-module.exports = mongoose.model("Users", UserSchema);
+module.exports = mongoose.model("User", UserSchema);

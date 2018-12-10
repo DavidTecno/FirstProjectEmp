@@ -43,42 +43,42 @@ var router = express.Router();
 
 //..modules
 router.route('/modules')
-    .post(moduleController.postModules)
-    .get(moduleController.allModules);
+    .post(authController.isAuthenticated, moduleController.postModules)
+    .get(authController.isAuthenticated, moduleController.allModules);
 
 router.route('/modules/:id')
-    .get(moduleController.allModules)
-    .put(moduleController.putModules)
-    .delete(moduleController.deleteModules);
+    .get(authController.isAuthenticated, moduleController.allModules)
+    .put(authController.isAuthenticated, moduleController.putModules)
+    .delete(authController.isAuthenticated, moduleController.deleteModules);
 
 //..subjects
 //post subjects is put in modules 
 router.route('/subjects')
-    .get(subjectController.allSubjects)
-    .post(subjectController.postSubjects);
+    .get(authController.isAuthenticated, subjectController.allSubjects)
+    .post(authController.isAuthenticated, subjectController.postSubjects);
 
 router.route('/subjects/:id')
-    .put(subjectController.putSubjects)
-    .delete(subjectController.deleteSubjects);
+    .put(authController.isAuthenticated, subjectController.putSubjects)
+    .delete(authController.isAuthenticated, subjectController.deleteSubjects);
 
 //..users
 router.route('/users/:id')
-    .get(moduleController.allModules)
-    .put(moduleController.putModules)
-    .delete(moduleController.deleteModules);
+    .get(authController.isAuthenticated, moduleController.allModules)
+    .put(authController.isAuthenticated, moduleController.putModules)
+    .delete(authController.isAuthenticated, moduleController.deleteModules);
 
 router.route('/users')
-    .post(userController.postUsers)
-    .get(userController.allUsers);
+    .post(authController.isAuthenticated, userController.postUsers)
+    .get(authController.isAuthenticated, userController.allUsers);
 
 //image
 router.route('/images')
-    .post(upload.single('image'), imageController.postImages)
-    .get(imageController.allImages);
+    .post(authController.isAuthenticated, upload.single('image'), imageController.postImages)
+    .get(authController.isAuthenticated, imageController.allImages);
 
 router.route('/images/:id')
-    .get(imageController.getImage)
-    .delete(imageController.deleteImage);
+    .get(authController.isAuthenticated, imageController.getImage)
+    .delete(authController.isAuthenticated, imageController.deleteImage);
 
 mongoose.connect("mongodb://127.0.0.1:27017/ServiciosPedidos", {
     // usar para evitar problemas con el node

@@ -1,79 +1,113 @@
 var Subject = require("../models/subject");
+var Module = require("../models/module");
+var User = require('../models/user');
 
-//Post
 exports.postSubjects = function (req, res) {
-    // Create a new instance of the Subject model
-    var subject = new Subject();
 
-    // Set the subject properties that came from the POST data
-    subject.name = req.body.name;
-    subject.info = req.body.info;
+  var subject = new Subject();
 
-    // Save the subject and check for errors
-    subject.save(function (err) {
-        if (err){
+  // Set the subject properties that came from the POST data
+  subject.name = req.body.name;
+  subject.info = req.body.info;
+  subject.user = req.body.userId;
+  subject.module = req.body.moduleId;
 
-            res.send(err);
+  subject.save(function (err) {
+    if (err) {
+      res.send(err);
+      return;
+    }
+   res.json({ message: 'Subject added to the Service!', data: subject });
+    
+  });
 
-        }
-
-        res.json({ message: 'Subject added to the Service!', data: subject });
-    });
 };
 
 //Gets
 //Get All
 exports.allSubjects = function (req, res) {
-    // Use the Subject model to find all subjects
-    Subject.find(function (err, subject) {
-        if (err){
+  // Use the Subject model to find all subjects
+  Subject.find(function (err, subject) {
+    if (err) {
 
-            res.send(err);
+      res.send(err);
+        return;
 
-        }
+    }
 
-        res.json(subject);
-    });
+    res.json(subject);
+  });
 };
 
-//Get One
-exports.getSubject = function(req, res) {
-    // Use the Subject model to find a specific subject
-    Subject.findById(req.params.subject_id, function(err, subject) {
-      if (err)
+//Get Subjects to one Module
+exports.getSubjectModule = function (req, res) {
+  // Use the Subject model to find all subjects in a module
+  console.log("entra en subject module");
+  Subject.find({module: req.params.moduleId}, function (err, subject) {
+    if (err) {
+
+      res.send(err);
+        return;
+    }
+
+    res.json(subject)
+  });
+};
+
+
+//Get Subjects to one user in module
+exports.getSubjectUser = function (req, res) {
+  // Use the Subject model to find all subjects of a user
+  console.log("entra en subject user");
+  Subject.find({module: req.params.moduleId, user: req.params.userId}, function (err, subject) {
+    if (err) {
+
+      res.send(err);
+        return;
+
+    }
+
+    res.json(subject);
+  });
+};
+
+exports.getSubject = function (req, res) {
+  // Use the Subject model to find a specific subject
+  Subject.findById(req.params.id, (err, subject) => {
+      if (err){
         res.send(err);
-  
+        return;
+      }
       res.json(subject);
     });
-  };
+
+}
 
 //Put
-exports.putSubjects = function(req, res) {
-    // Use the Subject model to find a specific subject
-    Subject.findById(req.params.subject_id, function(err, subject) {
-      if (err)
-        res.send(err);
-  
-      // Update the existing subject quantity
-      subject.name = req.body.name;
-  
-      // Save the subject and check for errors
-      subject.save(function(err) {
-        if (err)
-          res.send(err);
-  
-        res.json(subject);
-      });
-    });
-  };
+exports.putSubjects = function (req, res) {
+  // Use the Subject model to find a specific subject
+  Subject.findByIdAndUpdate(req.params.id, req.body, { new: true },
 
-  //Delete
-  exports.deleteSubjects = function(req, res) {
-    // Use the Subject model to find a specific subject and remove it
-    Subject.findByIdAndRemove(req.params.subject_id, function(err) {
-      if (err)
+    (err, subject) => {
+      if (err){
         res.send(err);
-  
-      res.json({ message: 'Subject removed!' });
+        return;
+      }
+
+      res.json(subject);
     });
-  };
+
+};
+
+//Delete
+exports.deleteSubjects = function (req, res) {
+  // Use the Subject model to find a specific subject and remove it
+  Subject.findByIdAndRemove(req.params.id, function (err) {
+    if (err){
+      res.send(err);
+        return;
+    }
+
+    res.json({ message: 'Subject removed!' });
+  });
+};

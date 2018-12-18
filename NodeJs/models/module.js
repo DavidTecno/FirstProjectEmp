@@ -1,24 +1,9 @@
-
 const mongoose = require('mongoose');
-//const Subject = require('../models/subject.js');
 
 var ModuleSchema = new mongoose.Schema({
-    name: String,
-    info: String,
-    subjects: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Subject' }]
+    name: {type: String, unique: true, required: true},
+    info:  String, 
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 });
 
-// var SubjectSchema = new mongoose.Schema({
-//     name: String,
-//     username: String,
-//     info: String,
-//     img: [{
-//         type: String
-//     }],
-//     video: [{
-//         type: String
-//     }]
-// })
-
 module.exports = mongoose.model("Module", ModuleSchema);
-// module.exports = mongoose.model("Subject", SubjectSchema);

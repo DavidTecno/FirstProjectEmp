@@ -1,0 +1,27 @@
+<ion-header>
+    <ion-navbar>
+      <button ion-button icon-only menuToggle right>
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <ion-buttons start>
+        <button ion-button icon-only (click)="goToSubjects()">
+          <ion-icon name="arrow-back"></ion-icon>
+        </button>
+      </ion-buttons>
+      <ion-title>Module Services</ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding text-center>
+    <h2>Subject Images</h2>
+  
+    <ion-slides #slides (ionSlideDidChange)="chargeImages()">
+        <ion-slide>
+            <p></p>
+            <p></p>
+          <img src="{{modArray.url}}" alt="Asus">
+        </ion-slide>
+    </ion-slides>
+    
+  
+  </ion-content>

@@ -1,5 +1,4 @@
 var Module = require("../models/module");
-var User = require("../models/user");
 
 //Post
 exports.postModules = function (req, res) {
@@ -16,6 +15,7 @@ exports.postModules = function (req, res) {
   module.save((err) => {
     if (err) {
       res.send(err);
+        return;
     } else {
       res.json({ message: 'Module added to the Server!', data: module });
     }
@@ -33,6 +33,7 @@ exports.allModules = function (req, res) {
     if (err) {
 
       res.send(err);
+        return;
 
     }
 
@@ -43,9 +44,11 @@ exports.allModules = function (req, res) {
 //Get One
 exports.getModule = function (req, res) {
   // Use the Module model to find a specific module
-  Module.findById(req.params.id, function (err, module) {
-    if (err)
+  Module.findById(req.params.id).populate('').exec (function (err, module) {
+    if (err){
       res.send(err);
+        return;
+    }
 
     res.json(module);
   });
@@ -56,10 +59,10 @@ exports.putModules = function (req, res) {
   // Use the Module model to find a specific module
   Module.findByIdAndUpdate(req.params.id, req.body, { new: true },
     (err, module) => {
-      if (err)
+      if (err){
         res.send(err);
-
-
+        return;
+      }
 
       res.json(module);
     });
@@ -69,8 +72,10 @@ exports.putModules = function (req, res) {
 exports.deleteModules = function (req, res) {
   // Use the Module model to find a specific module and remove it
   Module.findByIdAndRemove(req.params.id, function (err) {
-    if (err)
+    if (err){
       res.send(err);
+        return;
+    }
 
     res.json({ message: 'Module removed!' });
   });

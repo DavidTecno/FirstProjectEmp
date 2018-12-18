@@ -11,14 +11,18 @@ exports.postUsers = function (req, res) {
   user.password = req.body.password;
   user.role = ['5c0cfc48b79fd039918ec3ea'];
 
+  console.log(JSON.stringify(user));
+
   // Save the user and check for errors
   user.save(function (err) {
     if (err) {
 
       res.send(err);
+      //console.log(err);
+      return;
 
     }
-    res.json(user);
+    res.status(200).json(user);
   });
 };
 
@@ -30,7 +34,7 @@ exports.allUsers = function (req, res) {
     if (err) {
 
       res.send(err);
-
+      return;
     }
 
     res.json(user);
@@ -41,8 +45,10 @@ exports.allUsers = function (req, res) {
 exports.getUser = function (req, res) {
   // Use the User model to find a specific user
   User.findById(req.params.id, function (err, user) {
-    if (err)
+    if (err){
       res.send(err);
+        return;
+    }
 
     res.json(user);
   });
@@ -51,23 +57,36 @@ exports.getUser = function (req, res) {
 //Put
 exports.putUsers = function (req, res) {
   // Use the User model to find a specific user
-  User.findByIdAndUpdate(req.params.id, req.body, { new: true },
+  User.findById(req.params.id, req.body, { new: true },
     (err, user) => {
-      if (err)
+      if (err){
         res.send(err);
+        return;
+      }
+        
 
+      user.save(function (err) {
+        if (err) {
 
+          res.send(err);
+        return;
 
-      res.json(user);
+        }
+        res.json(user);
+      });
     });
+
 };
 
 //Delete
 exports.deleteUsers = function (req, res) {
   // Use the User model to find a specific user and remove it
   User.findByIdAndRemove(req.params.id, function (err) {
-    if (err)
+    if (err){
       res.send(err);
+        return;
+    }
+      
 
     res.json({ message: 'User removed!' });
   });

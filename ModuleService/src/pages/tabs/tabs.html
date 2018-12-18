@@ -1,3 +1,18 @@
+<ion-header>
+    <ion-navbar>       
+        <button ion-button icon-only menuToggle right>
+            <ion-icon name ="menu"></ion-icon>
+        </button>
+      <ion-title>Module Services</ion-title>
+      <ion-buttons end>
+          <button ion-button icon-only (click)="addSubject()">
+            <ion-icon name="add"></ion-icon>
+          </button>
+    </ion-buttons>
+    </ion-navbar>
+  </ion-header>
+
 <ion-tabs>
-  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
+  <ion-tab [root]="tab1Root" tabTitle="Your Subjects" tabIcon="contact"></ion-tab>
+  <ion-tab [root]="tab2Root" tabTitle="All Subjects" tabIcon="albums"></ion-tab>
 </ion-tabs>

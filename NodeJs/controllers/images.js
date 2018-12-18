@@ -16,6 +16,7 @@ exports.postImages = function (req, res) {
     image.save(function (err) {
       if (err) {
         res.send(err);
+        return;
       }
       res.json({ message: 'Image added', data: image });
     });
@@ -30,6 +31,7 @@ exports.allImages = function (req, res) {
   Image.find({}, '-__v').lean().exec((err, images) => {
     if (err) {
       res.sendStatus(400);
+      return;
     }
 
     for (let i = 0; i< images.length; i++){
@@ -48,6 +50,7 @@ exports.getImage = function (req, res) {
     if (err){
 
       res.sendStatus(400);
+      return;
     }
     
     res.setHeader('Content-Type', 'image/jpeg');
@@ -61,6 +64,7 @@ exports.deleteImage = function (req, res) {
   Image.findByIdAndRemove(req.params.id, function (err, image) {
     if (err){
       res.sendStatus(400);
+      return;
     }
 
     del([path.join(Upload_Path, image.filename)]).then(deleted => {

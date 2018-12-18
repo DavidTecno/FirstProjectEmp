@@ -21,12 +21,12 @@ var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, Upload_Path);
     },
-    filename: function (req, file, cb){
+    filename: function (req, file, cb) {
         cb(null, file.fieldname + '-' + Date.now());
     }
 });
 
-let upload = multer({ storage: storage});
+let upload = multer({ storage: storage });
 
 app.use(cors());
 
@@ -43,42 +43,49 @@ var router = express.Router();
 
 //..modules
 router.route('/modules')
-    .post(authController.isAuthenticated, moduleController.postModules)
-    .get(authController.isAuthenticated, moduleController.allModules);
+    .post(moduleController.postModules)
+    .get(moduleController.allModules);
 
 router.route('/modules/:id')
-    .get(authController.isAuthenticated, moduleController.allModules)
-    .put(authController.isAuthenticated, moduleController.putModules)
-    .delete(authController.isAuthenticated, moduleController.deleteModules);
+    .get(moduleController.getModule)
+    .put(moduleController.putModules)
+    .delete(moduleController.deleteModules);
 
 //..subjects
 //post subjects is put in modules 
 router.route('/subjects')
-    .get(authController.isAuthenticated, subjectController.allSubjects)
-    .post(authController.isAuthenticated, subjectController.postSubjects);
+    .get(subjectController.allSubjects)
+    .post(subjectController.postSubjects);
 
 router.route('/subjects/:id')
-    .put(authController.isAuthenticated, subjectController.putSubjects)
-    .delete(authController.isAuthenticated, subjectController.deleteSubjects);
+    .get(subjectController.getSubject)
+    .put(subjectController.putSubjects)
+    .delete(subjectController.deleteSubjects);
+
+//Subjects in Modules
+router.route('/subjects/module/:moduleId')
+    .get(subjectController.getSubjectModule);
+
+//Subjects of users
+router.route('/subjects/user/:moduleId&:userId')
+    .get(subjectController.getSubjectUser);
 
 //..users
-router.route('/users/:id')
-    .get(authController.isAuthenticated, moduleController.allModules)
-    .put(authController.isAuthenticated, moduleController.putModules)
-    .delete(authController.isAuthenticated, moduleController.deleteModules);
+router.route('/userAuth/:id')
+    .get(authController.isAuthenticated, userController.getUser);
 
 router.route('/users')
-    .post(authController.isAuthenticated, userController.postUsers)
-    .get(authController.isAuthenticated, userController.allUsers);
+    .post(userController.postUsers)
+    .get(userController.allUsers);
 
 //image
 router.route('/images')
-    .post(authController.isAuthenticated, upload.single('image'), imageController.postImages)
-    .get(authController.isAuthenticated, imageController.allImages);
+    .post(upload.single('image'), imageController.postImages)
+    .get(imageController.allImages);
 
 router.route('/images/:id')
-    .get(authController.isAuthenticated, imageController.getImage)
-    .delete(authController.isAuthenticated, imageController.deleteImage);
+    .get(imageController.getImage)
+    .delete(imageController.deleteImage);
 
 mongoose.connect("mongodb://127.0.0.1:27017/ServiciosPedidos", {
     // usar para evitar problemas con el node
